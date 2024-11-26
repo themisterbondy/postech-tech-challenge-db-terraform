@@ -2,11 +2,7 @@ name: Terraform
 
 on:
     push:
-        branches:
-            - main
     pull_request:
-        branches:
-            - main
 
 jobs:
     terraform:
@@ -19,6 +15,7 @@ jobs:
               uses: hashicorp/setup-terraform@v1
 
             - name: Azure Login
+              if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
               uses: azure/login@v1
               with:
                   creds: ${{ secrets.AZURE_CREDENTIALS }}
