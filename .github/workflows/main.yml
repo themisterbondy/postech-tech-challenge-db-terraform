@@ -2,6 +2,8 @@ name: Terraform
 
 on:
     push:
+        branches:
+            - main
     pull_request:
     workflow_dispatch:
 
@@ -16,7 +18,6 @@ jobs:
               uses: hashicorp/setup-terraform@v1
 
             - name: Azure Login
-              if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
               uses: azure/login@v1
               with:
                   creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -37,7 +38,7 @@ jobs:
               run: terraform plan
 
             - name: Terraform Apply
-              if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+              if: github.ref == 'refs/heads/main'
               env:
                   TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
