@@ -1,0 +1,49 @@
+name: Terraform
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    terraform:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+
+            - name: Azure Login
+              uses: azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Terraform Init
+              run: terraform init
+
+            - name: Terraform Validate
+              run: terraform validate
+
+            - name: Terraform Plan
+              env:
+                  TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+                  TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
+                  TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
+                  TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
+                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+              run: terraform plan
+
+            - name: Terraform Apply
+              if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+              env:
+                  TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
+                  TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
+                  TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
+                  TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
+                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+              run: terraform apply -auto-approve
