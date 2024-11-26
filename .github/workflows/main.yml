@@ -3,15 +3,16 @@ name: Terraform
 on:
     push:
         branches:
-            - main
+            - '**'
     pull_request:
     workflow_dispatch:
 
 jobs:
     terraform:
         runs-on: ubuntu-latest
+
         steps:
-            - name: Checkout code
+            - name: Checkout Repository
               uses: actions/checkout@v2
 
             - name: Setup Terraform
@@ -21,6 +22,9 @@ jobs:
               uses: azure/login@v1
               with:
                   creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Lint Terraform code
+              run: terraform fmt -check && tflint
 
             - name: Terraform Init
               run: terraform init
@@ -35,14 +39,41 @@ jobs:
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
                   TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
-              run: terraform plan
+              run: terraform plan -out tfplan
+
+            - name: Stash Terraform Plan Output
+              uses: actions/upload-artifact@v2
+              with:
+                  name: tfplan
+                  path: tfplan
+
+    apply:
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        needs: terraform
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v2
+
+            - name: Setup Terraform
+              uses: hashicorp/setup-terraform@v1
+
+            - name: Azure Login
+              uses: azure/login@v1
+              with:
+                  creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+            - name: Download Terraform Plan Output
+              uses: actions/download-artifact@v2
+              with:
+                  name: tfplan
 
             - name: Terraform Apply
-              if: github.ref == 'refs/heads/main'
               env:
                   TF_VAR_subscription_id: ${{ secrets.SUBSCRIPTION_ID }}
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
                   TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
-              run: terraform apply -auto-approve
+              run: terraform apply -auto-approve tfplan
