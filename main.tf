@@ -72,6 +72,13 @@ resource "azurerm_postgresql_flexible_server" "postgresql_flexible" {
   backup_retention_days = 7
 }
 
+# Configurar extensões do servidor PostgreSQL flexível
+resource "azurerm_postgresql_flexible_server_configuration" "postgresql_flexible" {
+  name      = "azure.extensions"
+  server_id = azurerm_postgresql_flexible_server.postgresql_flexible.id
+  value     = "CITEXT,HSTORE,UUID-OSSP"
+}
+
 # Criar um banco de dados no servidor flexível
 resource "azurerm_postgresql_flexible_server_database" "db" {
   name      = var.database_name
