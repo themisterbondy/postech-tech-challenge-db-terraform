@@ -28,7 +28,7 @@ A escolha do **PostgreSQL** como banco de dados se deve às seguintes razões:
 
 ## 🛠️ Estrutura do Banco de Dados
 
----------------------------------------------------
+
 ### **Tabela Carts**
 - **Descrição**: Armazena informações dos carrinhos de compra dos clientes.
 
