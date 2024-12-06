@@ -100,11 +100,12 @@ CREATE TABLE "Products" (
 CREATE INDEX "IX_Products_Category" ON "Products" ("Category");
 ```
 
-Índices: Índice em Category para otimizar buscas por categoria de produto.
-Considerações: Estrutura mantém flexibilidade para adicionar informações adicionais sobre o produto, como descrição e URL de imagem.
-Tabela CartItems
-Descrição: Armazena os itens associados a um carrinho específico.
-Definição:
+- **Índices**: Índice em Category para otimizar buscas por categoria de produto.
+- **Considerações**: Estrutura mantém flexibilidade para adicionar informações adicionais sobre o produto, como descrição e URL de imagem.
+
+### **Tabela CartItems**
+- **Descrição**: Armazena os itens associados a um carrinho específico.
+- **Definição**:
 
 ```sql
 CREATE TABLE "CartItems" (
@@ -122,11 +123,12 @@ CREATE INDEX "IX_CartItems_CartId" ON "CartItems" ("CartId");
 CREATE INDEX "IX_CartItems_ProductId" ON "CartItems" ("ProductId");
 ```
 
-Relacionamentos: Cada item está associado a um carrinho (CartId) e a um produto (ProductId).
-Considerações: Quantity e UnitPrice ajudam a calcular o valor total do carrinho.
-Tabela OrderItems
-Descrição: Armazena os itens associados a um pedido específico.
-Definição:
+- **Relacionamentos**: Cada item está associado a um carrinho (CartId) e a um produto (ProductId).
+- **Considerações**: Quantity e UnitPrice ajudam a calcular o valor total do carrinho.
+
+### **Tabela OrderItems**
+- **Descrição**: Armazena os itens associados a um pedido específico.
+- **Definição**:
 ```sql
 CREATE TABLE "OrderItems" (
 "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
@@ -142,21 +144,27 @@ CONSTRAINT "FK_OrderItems_Products_ProductId" FOREIGN KEY ("ProductId") REFERENC
 CREATE INDEX "IX_OrderItems_OrderId" ON "OrderItems" ("OrderId");
 CREATE INDEX "IX_OrderItems_ProductId" ON "OrderItems" ("ProductId");
 ``` 
-Relacionamentos: Cada item está associado a um pedido (OrderId) e a um produto (ProductId).
-Considerações: Estrutura similar a CartItems, mas reflete o estado final de um pedido.
-📚 Considerações sobre Modelagem
+- **Relacionamentos**: Cada item está associado a um pedido (OrderId) e a um produto (ProductId).
+- **Considerações**: Estrutura similar a CartItems, mas reflete o estado final de um pedido.
+
+### 📚 Considerações sobre Modelagem
+
 UUIDs como Chaves Primárias: Foram escolhidos UUIDs para todas as chaves primárias para garantir unicidade global e flexibilidade em cenários distribuídos.
 Relacionamentos e Integridade: As Foreign Keys garantem a consistência dos relacionamentos entre Carts, Orders, Customers, Products e seus respectivos itens.
 Status e PaymentStatus: Não foram normalizados por decisão de design, mas são validados pela lógica de aplicação para manter valores consistentes.
-⚙️ Índices e Performance
+
+### ⚙️ Índices e Performance
+
 Índices Únicos: Em Customers.Email e Customers.Cpf para garantir a integridade dos dados e evitar duplicidade.
 Índices de Consulta: Índices em Products.Category, CartItems.CartId, OrderItems.OrderId, entre outros, para otimizar o desempenho de consultas frequentes e facilitar operações de junção.
-🕒 Timestamps Automáticos
+### 🕒 Timestamps Automáticos
+
 As tabelas incluem campos CreatedAt e UpdatedAt para facilitar auditorias e acompanhamento de mudanças nos registros.
-Exemplo:
+
+#### Exemplo:
 ```sql
 
 "CreatedAt" timestamp with time zone NOT NULL DEFAULT now(),
 "UpdatedAt" timestamp with time zone NOT NULL DEFAULT now()
 ```
-Considerações: Esses campos são particularmente úteis para acompanhar o ciclo de vida dos registros, desde a criação até a última modificação.
+- **Considerações**: Esses campos são particularmente úteis para acompanhar o ciclo de vida dos registros, desde a criação até a última modificação.
