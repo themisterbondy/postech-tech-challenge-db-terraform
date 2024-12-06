@@ -80,11 +80,15 @@ CONSTRAINT "FK_Orders_Customers_CustomerId" FOREIGN KEY ("CustomerId") REFERENCE
 CREATE INDEX "IX_Orders_CustomerId" ON "Orders" ("CustomerId");
 ```
 
-Relacionamentos: Cada pedido está relacionado a um cliente (CustomerId como FK).
-Considerações: Status do pedido será mantido como texto e validado na aplicação.
-Tabela Products
-Descrição: Armazena informações dos produtos disponíveis na loja.
-Definição:
+- **Relacionamentos**: Cada pedido está relacionado a um cliente (CustomerId como FK).
+- **Considerações**:  Status do pedido será mantido como texto e validado na aplicação.
+
+
+### **Tabela Products**
+
+**Definição**:
+Armazena informações dos produtos disponíveis na loja.
+
 
 ```sql
 CREATE TABLE "Products" (
@@ -105,7 +109,8 @@ CREATE INDEX "IX_Products_Category" ON "Products" ("Category");
 
 ### **Tabela CartItems**
 - **Descrição**: Armazena os itens associados a um carrinho específico.
-- **Definição**:
+
+**Definição**:
 
 ```sql
 CREATE TABLE "CartItems" (
@@ -128,7 +133,8 @@ CREATE INDEX "IX_CartItems_ProductId" ON "CartItems" ("ProductId");
 
 ### **Tabela OrderItems**
 - **Descrição**: Armazena os itens associados a um pedido específico.
-- **Definição**:
+
+**Definição**:
 ```sql
 CREATE TABLE "OrderItems" (
 "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
