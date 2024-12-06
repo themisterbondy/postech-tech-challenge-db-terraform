@@ -43,10 +43,11 @@ A escolha do **PostgreSQL** como banco de dados se deve às seguintes razões:
       CONSTRAINT "PK_Carts" PRIMARY KEY ("Id"),
       CONSTRAINT "FK_Carts_Customers_CustomerId" FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("Id") ON DELETE CASCADE
   );
-```
   CREATE INDEX "IX_Carts_CustomerId" ON "Carts" ("CustomerId");
-Relacionamentos: Cada carrinho está associado a um cliente (CustomerId como FK).
-Considerações: PaymentStatus será mantido como texto, validado pela aplicação para evitar inconsistências.
+
+```
+- **Relacionamentos**: Cada carrinho está associado a um cliente (CustomerId como FK).
+- **Considerações**: PaymentStatus será mantido como texto, validado pela aplicação para evitar inconsistências.
 
 ----------------------------------------------------
 ### **Tabela Customers**
