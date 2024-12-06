@@ -94,9 +94,9 @@ CREATE INDEX "IX_Orders_CustomerId" ON "Orders" ("CustomerId");
 ------------------------------------------------
 ### **Tabela Products**
 
-**Definição**:
-Armazena informações dos produtos disponíveis na loja.
+- **Descrição**:Armazena informações dos produtos disponíveis na loja.
 
+**Definição**:
 
 ```sql
 CREATE TABLE "Products" (
