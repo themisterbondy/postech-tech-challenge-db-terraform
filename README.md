@@ -173,8 +173,9 @@ Status e PaymentStatus: Não foram normalizados por decisão de design, mas são
 
 ### ⚙️ Índices e Performance
 
-Índices Únicos: Em Customers.Email e Customers.Cpf para garantir a integridade dos dados e evitar duplicidade.
-Índices de Consulta: Índices em Products.Category, CartItems.CartId, OrderItems.OrderId, entre outros, para otimizar o desempenho de consultas frequentes e facilitar operações de junção.
+**Índices Únicos**: Em Customers.Email e Customers.Cpf para garantir a integridade dos dados e evitar duplicidade.
+**Índices de Consulta**: Índices em Products.Category, CartItems.CartId, OrderItems.OrderId, entre outros, para otimizar o desempenho de consultas frequentes e facilitar operações de junção.
+
 ### 🕒 Timestamps Automáticos
 
 As tabelas incluem campos CreatedAt e UpdatedAt para facilitar auditorias e acompanhamento de mudanças nos registros.
