@@ -57,12 +57,16 @@ Considerações: PaymentStatus será mantido como texto, validado pela aplicaç�
       "Cpf" character varying(11) NOT NULL UNIQUE,
       CONSTRAINT "PK_Customers" PRIMARY KEY ("Id")
   );
+  ```
+
 - **Índices**: Índices únicos para garantir que não existam CPFs ou e-mails duplicados.
 - **Considerações**: Dados sensíveis como CPF são armazenados de forma única para evitar duplicidade e facilitar a busca.
 
 ### **Tabela Orders**
 - **Descrição**: Armazena informações dos pedidos feitos pelos clientes.
 - **Definição**:
+
+```sql
 CREATE TABLE "Orders" (
 "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
 "CreatedAt" timestamp with time zone NOT NULL DEFAULT now(),
@@ -74,13 +78,15 @@ CONSTRAINT "FK_Orders_Customers_CustomerId" FOREIGN KEY ("CustomerId") REFERENCE
 );
 
 CREATE INDEX "IX_Orders_CustomerId" ON "Orders" ("CustomerId");
+```
+
 Relacionamentos: Cada pedido está relacionado a um cliente (CustomerId como FK).
 Considerações: Status do pedido será mantido como texto e validado na aplicação.
 Tabela Products
 Descrição: Armazena informações dos produtos disponíveis na loja.
 Definição:
-sql
-Copiar código
+
+```sql
 CREATE TABLE "Products" (
     "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
     "Name" character varying(100) NOT NULL,
@@ -92,13 +98,15 @@ CREATE TABLE "Products" (
 );
 
 CREATE INDEX "IX_Products_Category" ON "Products" ("Category");
+```
+
 Índices: Índice em Category para otimizar buscas por categoria de produto.
 Considerações: Estrutura mantém flexibilidade para adicionar informações adicionais sobre o produto, como descrição e URL de imagem.
 Tabela CartItems
 Descrição: Armazena os itens associados a um carrinho específico.
 Definição:
-sql
-Copiar código
+
+```sql
 CREATE TABLE "CartItems" (
 "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
 "ProductId" uuid NOT NULL,
@@ -112,13 +120,14 @@ CONSTRAINT "FK_CartItems_Products_ProductId" FOREIGN KEY ("ProductId") REFERENCE
 
 CREATE INDEX "IX_CartItems_CartId" ON "CartItems" ("CartId");
 CREATE INDEX "IX_CartItems_ProductId" ON "CartItems" ("ProductId");
+```
+
 Relacionamentos: Cada item está associado a um carrinho (CartId) e a um produto (ProductId).
 Considerações: Quantity e UnitPrice ajudam a calcular o valor total do carrinho.
 Tabela OrderItems
 Descrição: Armazena os itens associados a um pedido específico.
 Definição:
-sql
-Copiar código
+```sql
 CREATE TABLE "OrderItems" (
 "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
 "OrderId" uuid NOT NULL,
@@ -132,6 +141,7 @@ CONSTRAINT "FK_OrderItems_Products_ProductId" FOREIGN KEY ("ProductId") REFERENC
 
 CREATE INDEX "IX_OrderItems_OrderId" ON "OrderItems" ("OrderId");
 CREATE INDEX "IX_OrderItems_ProductId" ON "OrderItems" ("ProductId");
+``` 
 Relacionamentos: Cada item está associado a um pedido (OrderId) e a um produto (ProductId).
 Considerações: Estrutura similar a CartItems, mas reflete o estado final de um pedido.
 📚 Considerações sobre Modelagem
@@ -144,8 +154,9 @@ Status e PaymentStatus: Não foram normalizados por decisão de design, mas são
 🕒 Timestamps Automáticos
 As tabelas incluem campos CreatedAt e UpdatedAt para facilitar auditorias e acompanhamento de mudanças nos registros.
 Exemplo:
-sql
-Copiar código
+```sql
+
 "CreatedAt" timestamp with time zone NOT NULL DEFAULT now(),
 "UpdatedAt" timestamp with time zone NOT NULL DEFAULT now()
+```
 Considerações: Esses campos são particularmente úteis para acompanhar o ciclo de vida dos registros, desde a criação até a última modificação.
