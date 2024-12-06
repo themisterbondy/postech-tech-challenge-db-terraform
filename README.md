@@ -28,9 +28,11 @@ A escolha do **PostgreSQL** como banco de dados se deve às seguintes razões:
 
 ## 🛠️ Estrutura do Banco de Dados
 
+---------------------------------------------------
 ### **Tabela Carts**
 - **Descrição**: Armazena informações dos carrinhos de compra dos clientes.
-- **Definição**:
+
+**Definição**:
   ```sql
   CREATE TABLE "Carts" (
       "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
@@ -41,14 +43,17 @@ A escolha do **PostgreSQL** como banco de dados se deve às seguintes razões:
       CONSTRAINT "PK_Carts" PRIMARY KEY ("Id"),
       CONSTRAINT "FK_Carts_Customers_CustomerId" FOREIGN KEY ("CustomerId") REFERENCES "Customers" ("Id") ON DELETE CASCADE
   );
-
+```
   CREATE INDEX "IX_Carts_CustomerId" ON "Carts" ("CustomerId");
 Relacionamentos: Cada carrinho está associado a um cliente (CustomerId como FK).
 Considerações: PaymentStatus será mantido como texto, validado pela aplicação para evitar inconsistências.
 
+----------------------------------------------------
 ### **Tabela Customers**
 - **Descrição**: Armazena informações dos clientes, incluindo nome, e-mail e CPF.
-- **Definição**:
+
+**Definição**:
+
   ```sql
   CREATE TABLE "Customers" (
       "Id" uuid NOT NULL DEFAULT (uuid_generate_v4()),
@@ -62,9 +67,12 @@ Considerações: PaymentStatus será mantido como texto, validado pela aplicaç�
 - **Índices**: Índices únicos para garantir que não existam CPFs ou e-mails duplicados.
 - **Considerações**: Dados sensíveis como CPF são armazenados de forma única para evitar duplicidade e facilitar a busca.
 
+----------------------------------------
+
 ### **Tabela Orders**
 - **Descrição**: Armazena informações dos pedidos feitos pelos clientes.
-- **Definição**:
+
+**Definição**:
 
 ```sql
 CREATE TABLE "Orders" (
@@ -83,7 +91,7 @@ CREATE INDEX "IX_Orders_CustomerId" ON "Orders" ("CustomerId");
 - **Relacionamentos**: Cada pedido está relacionado a um cliente (CustomerId como FK).
 - **Considerações**:  Status do pedido será mantido como texto e validado na aplicação.
 
-
+------------------------------------------------
 ### **Tabela Products**
 
 **Definição**:
@@ -106,6 +114,8 @@ CREATE INDEX "IX_Products_Category" ON "Products" ("Category");
 
 - **Índices**: Índice em Category para otimizar buscas por categoria de produto.
 - **Considerações**: Estrutura mantém flexibilidade para adicionar informações adicionais sobre o produto, como descrição e URL de imagem.
+
+------------------------------------
 
 ### **Tabela CartItems**
 - **Descrição**: Armazena os itens associados a um carrinho específico.
@@ -130,6 +140,8 @@ CREATE INDEX "IX_CartItems_ProductId" ON "CartItems" ("ProductId");
 
 - **Relacionamentos**: Cada item está associado a um carrinho (CartId) e a um produto (ProductId).
 - **Considerações**: Quantity e UnitPrice ajudam a calcular o valor total do carrinho.
+ 
+ ----------------------
 
 ### **Tabela OrderItems**
 - **Descrição**: Armazena os itens associados a um pedido específico.
