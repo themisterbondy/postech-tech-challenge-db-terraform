@@ -52,11 +52,6 @@ variable "database_name" {
   sensitive   = true
 }
 
-# Criar o Resource Group
-resource "azurerm_resource_group" "rg" {
-  name     = var.resource_group_name
-  location = var.location
-}
 
 # Criar o servidor PostgreSQL flexível
 resource "azurerm_postgresql_flexible_server" "postgresql_flexible" {
