@@ -21,7 +21,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v1
+              uses: hashicorp/setup-terraform@v3
 
             - name: Lint Terraform code
               run: terraform fmt -check && tflint
@@ -57,7 +57,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Setup Terraform
-              uses: hashicorp/setup-terraform@v1
+              uses: hashicorp/setup-terraform@v3
 
             - name: Azure Login
               uses: azure/login@v1
