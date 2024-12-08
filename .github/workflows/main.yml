@@ -35,7 +35,7 @@ jobs:
               with:
                   azcliversion: latest
                   inlineScript: |
-                  az account show
+                    az account show
 
             - name: Lint Terraform code
               run: terraform fmt -check && tflint
