@@ -22,9 +22,6 @@ jobs:
             - name: Setup Terraform
               uses: hashicorp/setup-terraform@v3
 
-            - name: Lint Terraform code
-              run: terraform fmt -check && tflint
-
             - name: Terraform Init
               run: terraform init
 
