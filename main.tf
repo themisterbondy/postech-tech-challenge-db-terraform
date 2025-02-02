@@ -46,10 +46,14 @@ variable "admin_password" {
   sensitive   = true
 }
 
-variable "database_name" {
-  description = "The database name for PostgreSQL."
+variable "database_name_1" {
+  description = "Nome do primeiro banco de dados"
   type        = string
-  sensitive   = true
+}
+
+variable "database_name_2" {
+  description = "Nome do segundo banco de dados"
+  type        = string
 }
 
 
@@ -74,9 +78,17 @@ resource "azurerm_postgresql_flexible_server_configuration" "postgresql_flexible
   value     = "CITEXT,HSTORE,UUID-OSSP"
 }
 
-# Criar um banco de dados no servidor flexível
-resource "azurerm_postgresql_flexible_server_database" "db" {
-  name      = var.database_name
+# Criar o primeiro banco de dados no servidor flexível
+resource "azurerm_postgresql_flexible_server_database" "db1" {
+  name      = var.database_name_1
+  server_id = azurerm_postgresql_flexible_server.postgresql_flexible.id
+  charset   = "UTF8"
+  collation = "en_US.utf8"
+}
+
+# Criar o segundo banco de dados no servidor flexível
+resource "azurerm_postgresql_flexible_server_database" "db2" {
+  name      = var.database_name_2
   server_id = azurerm_postgresql_flexible_server.postgresql_flexible.id
   charset   = "UTF8"
   collation = "en_US.utf8"

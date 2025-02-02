@@ -44,7 +44,8 @@ jobs:
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
-                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+                  TF_VAR_database_name1: ${{ secrets.DATABASE_NAME1 }}
+                  TF_VAR_database_name2: ${{ secrets.DATABASE_NAME2 }}
               run: terraform plan -out=tfplan
 
             - name: Terraform Apply
@@ -54,5 +55,6 @@ jobs:
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
-                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+                  TF_VAR_database_name1: ${{ secrets.DATABASE_NAME1 }}
+                  TF_VAR_database_name2: ${{ secrets.DATABASE_NAME2 }}
               run: terraform apply -auto-approve tfplan
