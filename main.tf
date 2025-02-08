@@ -49,11 +49,13 @@ variable "admin_password" {
 variable "database_name_1" {
   description = "Nome do primeiro banco de dados"
   type        = string
+  sensitive   = true
 }
 
 variable "database_name_2" {
   description = "Nome do segundo banco de dados"
   type        = string
+  sensitive   = true
 }
 
 
