@@ -1,10 +1,9 @@
 name: Terraform
 
 on:
-    push:
-        branches:
-            - '**'
     pull_request:
+        branches:
+            - main
         types: [closed]
     workflow_dispatch:
 
@@ -44,15 +43,23 @@ jobs:
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
-                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+                  TF_VAR_database_name_1: ${{ secrets.DATABASE_NAME1 }}
+                  TF_VAR_database_name_2: ${{ secrets.DATABASE_NAME2 }}
               run: terraform plan -out=tfplan
 
+            - name: Upload Terraform Plan as Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: terraform-plan
+                  path: tfplan
+
             - name: Terraform Apply
-              if: github.ref == 'refs/heads/main'
+              if: github.event.pull_request.merged == true
               env:
                   TF_VAR_subscription_id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                   TF_VAR_postgresql_server_name: ${{ secrets.POSTGRESQL_SERVER_NAME }}
                   TF_VAR_admin_username: ${{ secrets.ADMIN_USERNAME }}
                   TF_VAR_admin_password: ${{ secrets.ADMIN_PASSWORD }}
-                  TF_VAR_database_name: ${{ secrets.DATABASE_NAME }}
+                  TF_VAR_database_name_1: ${{ secrets.DATABASE_NAME1 }}
+                  TF_VAR_database_name_2: ${{ secrets.DATABASE_NAME2 }}
               run: terraform apply -auto-approve tfplan
